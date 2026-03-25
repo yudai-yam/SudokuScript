@@ -34,6 +34,18 @@ public class Grid
         return true;
     }
 
+    public override string ToString()
+    {
+        var sb = new System.Text.StringBuilder();
+        for (int row = 0; row < 9; row++)
+        {
+            for (int col = 0; col < 9; col++)
+                sb.Append(_cells[row, col]);
+            sb.AppendLine();
+        }
+        return sb.ToString();
+    }
+
     public Boolean IsValid((int row, int column) move, int value)
     {
         int row = move.row;
@@ -51,9 +63,9 @@ public class Grid
         int squareRow = move.row / 3;
         int squareColumn = move.column / 3;
 
-        for (int r=squareRow; r<squareRow+3; r++)
+        for (int r=squareRow*3; r<squareRow*3+3; r++)
         {
-            for (int c=squareColumn; r<squareColumn+3; c++)
+            for (int c=squareColumn*3; c<squareColumn*3+3; c++)
             {
                 if (GetCell(r, c) == value)
                 {

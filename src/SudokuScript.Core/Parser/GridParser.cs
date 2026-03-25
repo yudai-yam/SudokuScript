@@ -23,10 +23,10 @@ public class GridParser
 
         for (int i=0; i<9*9; i++)
         {
-            int row = (i+1)/9;
+            int row = i/9;
             int column = i % 9;
             
-            grid.UpdateBoard((row, column), _input[i]);
+            grid.UpdateBoard((row, column), _input[i] - '0');
         }
 
         return grid;
