@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/SudokuScript.CLI/SudokuScript.CLI.csproj" />
     <Project Path="src/SudokuScript.Core/SudokuScript.Core.csproj" />
   </Folder>
   <Folder Name="/tests/">
