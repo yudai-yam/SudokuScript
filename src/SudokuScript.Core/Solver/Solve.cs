@@ -13,39 +13,52 @@ public class Solver
 
     public Grid? Solve()
     {
-        for (int row=0; row<9; row++)
+        // Base case: if the grid is fully filled, we found a solution
+        if (_grid.IsComplete())
         {
-            for (int column=0; column<9; column++)
+            return _grid;
+        }
+
+        // Find the next empty cell to fill
+        for (int row = 0; row < 9; row++)
+        {
+            for (int column = 0; column < 9; column++)
             {
-                // skip prefilled values
+                // Skip cells that are already filled
                 if (_grid.GetCell(row, column) != 0)
                 {
                     continue;
                 }
 
-                for (int value=1; value<=9; value++)
+                // Try each candidate digit (1-9) for this empty cell.
+                // Stop the loop early if a solution is found (result != null).
+                Grid? result = null;
+                for (int value = 1; value <= 9 && result == null; value++)
                 {
-                    if (_grid.IsValid((row, column), value))
+                    // If this value violates Sudoku CONSTRAINTS, skip it
+                    if (!_grid.IsValid((row, column), value))
                     {
-                        _grid.UpdateBoard((row, column), value);
+                        continue;
+                    }
 
-                        if (_grid.IsComplete())
-                        {
-                            return _grid;
-                        }
+                    // Make the choice: place the value in this cell
+                    _grid.UpdateBoard((row, column), value);
 
-                        var result = Solve();
-                        if (result != null)
-                        {
-                            return result;
-                        }
+                    // Recurse: attempt to solve the rest of the grid
+                    result = Solve();
 
-                        _grid.UpdateBoard((row, column), 0); //backtrack
+                    // Undo the choice (backtrack) if this path led to no solution
+                    if (result == null)
+                    {
+                        _grid.UpdateBoard((row, column), 0);
                     }
                 }
-                return null;
+
+                // Return the solution if found, or null if no valid value worked
+                return result;
             }
-        } 
+        }
+
         return _grid;
     }
 }
